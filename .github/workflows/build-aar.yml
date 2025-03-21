@@ -1,5 +1,6 @@
 name: Build AAR
-on: [push, workflow_dispatch]  # Runs on push or manually
+on: [push, workflow_dispatch]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,8 +17,16 @@ jobs:
       - name: Grant execution permissions
         run: chmod +x gradlew
 
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Build AAR
-        run: ./gradlew :torrentstreamlibrary:assembleRelease
+        run: ./gradlew :torrentstreamlibrary:assembleRelease --stacktrace
 
       - name: Upload AAR Artifact
         uses: actions/upload-artifact@v4
