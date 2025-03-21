@@ -1,0 +1,26 @@
+name: Build AAR
+on: [push, workflow_dispatch]  # Runs on push or manually
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Grant execution permissions
+        run: chmod +x gradlew
+
+      - name: Build AAR
+        run: ./gradlew :torrentstreamlibrary:assembleRelease
+
+      - name: Upload AAR Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: torrentstreamlibrary-release
+          path: torrentstreamlibrary/build/outputs/aar/torrentstreamlibrary-release.aar
