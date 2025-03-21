@@ -20,7 +20,7 @@ jobs:
         run: ./gradlew :torrentstreamlibrary:assembleRelease
 
       - name: Upload AAR Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: torrentstreamlibrary-release
           path: torrentstreamlibrary/build/outputs/aar/torrentstreamlibrary-release.aar
